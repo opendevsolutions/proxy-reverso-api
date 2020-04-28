@@ -12,7 +12,7 @@
         
 		<route>
 			<from uri="jetty:http://0.0.0.0:8180/{{proxy.apiContext}}?matchOnUriPrefix=true"/>
-			<to uri="https4://{{proxy.host}}/?bridgeEndpoint=true&amp;throwExceptionOnFailure=false"/>
+			<to uri="http4://{{proxy.host}}/?bridgeEndpoint=true&amp;throwExceptionOnFailure=false"/>
 		</route>
 
     </camelContext>
