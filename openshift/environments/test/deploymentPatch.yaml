@@ -3,7 +3,7 @@ spec:
   template:
     spec:
       containers:
-      - name: integraciones-api
+      - name: proxy-reverso-api
         resources:
           limits:
             cpu: '1'
