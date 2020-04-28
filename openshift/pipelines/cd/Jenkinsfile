@@ -1,0 +1,5 @@
+runCDPipeline(application: env.APP_NAME,
+              agent: "maven",
+              compileCommands: "mvn package -DskipTests -Dfabric8.skip -e -B",
+              testCommands: "export WSDL_PATH_INERBANKING='src/main/resources/wsdl/interbanking.wsdl';mvn test",
+              artifactsDir: "./target")
