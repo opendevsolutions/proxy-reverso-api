@@ -8,11 +8,43 @@
     <!-- Read filesystem properties -->
     <context:property-placeholder location="**/application.properties"/>
 
+	<camel:sslContextParameters id="sslContext">
+		<camel:trustManagers>
+            <camel:keyStore password="prueba" resource="keystore.jks" />
+         </camel:trustManagers>
+		 <camel:serverParameters clientAuthentication="NONE" />
+	</camel:sslContextParameters>
+
     <camelContext id="camelContext" xmlns="http://camel.apache.org/schema/spring">
         
 		<route>
 			<from uri="jetty:http://0.0.0.0:8180/{{proxy.apiContext}}?matchOnUriPrefix=true"/>
+			
+			<setHeader headerName="token">
+				<simple>
+					${header.Authorization}
+				</simple>
+			</setHeader>
+			<to uri="direct:callSSO"/>
+			<camel:log message="${header.token}"></camel:log>
+			<camel:log message="${property.accessToken}"></camel:log>
+			
 			<to uri="http4://{{proxy.host}}/?bridgeEndpoint=true&amp;throwExceptionOnFailure=false"/>
+		</route>
+		
+		<route>
+			<from uri="direct:callSSO"/>
+			<setHeader headerName="CamelHttpMethod"><simple>POST</simple></setHeader>
+			<setHeader headerName="Content-Type"><simple>application/x-www-form-urlencoded</simple></setHeader>
+			<setBody>
+				<camel:simple>client_id={{sso.login.clientId}}&amp;client_secret={{sso.login.clientSecret}}&amp;grant_type=client_credentials</camel:simple>
+			</setBody>
+			<to uri="https4://{{sso.login.url}}?bridgeEndpoint=true&amp;throwExceptionOnFailure=false&amp;sslContext=sslContext" />
+			<camel:setProperty propertyName="accessToken">
+				<camel:simple>
+					${body[access_token]}
+				</camel:simple>
+			</camel:setProperty>
 		</route>
 
     </camelContext>
