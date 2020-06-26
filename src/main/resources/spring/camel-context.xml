@@ -14,6 +14,12 @@
 			<from uri="jetty:http://0.0.0.0:8180/{{proxy.apiContext}}?matchOnUriPrefix=true"/>
 			<to uri="http4://{{proxy.host}}/?bridgeEndpoint=true&amp;throwExceptionOnFailure=false"/>
 		</route>
+		
+		
+		<route>
+			<from uri="jetty:http://0.0.0.0:8180/{{proxy.apiPublicContext}}?matchOnUriPrefix=true"/>
+			<to uri="http4://{{proxy.host.public}}/?bridgeEndpoint=true&amp;throwExceptionOnFailure=false"/>
+		</route>
 
     </camelContext>
 </beans>
