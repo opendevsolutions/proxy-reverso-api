@@ -19,8 +19,8 @@
     <camelContext id="camelContext" xmlns="http://camel.apache.org/schema/spring">
         
 		<route>
-			<from uri="jetty:http://0.0.0.0:8180/{{proxy.apiContext}}?matchOnUriPrefix=true"/>
-			<to uri="http4://{{proxy.host}}/?bridgeEndpoint=true&amp;throwExceptionOnFailure=false"/>
+			<from uri="jetty:http://0.0.0.0:8180/{{proxy.apiContext}}?matchOnUriPrefix=true&amp;requestHeaderSize=65536&amp;requestBufferSize=65536&amp;responseBufferSize=65536&amp;responseHeaderSize=65536"/>
+			<to uri="http4://{{proxy.host}}/?bridgeEndpoint=true&amp;throwExceptionOnFailure=false&amp;responseBufferSize=65536"/>
 		</route>
 
     </camelContext>
