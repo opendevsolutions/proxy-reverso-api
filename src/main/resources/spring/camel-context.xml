@@ -8,18 +8,10 @@
     <!-- Read filesystem properties -->
     <context:property-placeholder location="**/application.properties"/>
 
-	<!-- Initialize the jetty component -->
-	<bean id="jetty" class="org.apache.camel.component.jetty8.JettyHttpComponent8">
-		<property name="requestBufferSize" value="65536" />
-		<property name="requestHeaderSize" value="65536" />
-		<property name="responseBufferSize" value="65536" />
-		<property name="responseHeaderSize" value="65536" />
-	</bean>
-	
     <camelContext id="camelContext" xmlns="http://camel.apache.org/schema/spring">
         
 		<route>
-			<from uri="jetty:http://0.0.0.0:8180/{{proxy.apiContext}}?matchOnUriPrefix=true"/>
+			<from uri="jetty:http://0.0.0.0:8180/{{proxy.apiContext}}?matchOnUriPrefix=true&amp;requestHeaderSize=65536&amp;requestBufferSize=65536&amp;responseBufferSize=65536&amp;responseHeaderSize=65536"/>
 			<to uri="http4://{{proxy.host}}/?bridgeEndpoint=true&amp;throwExceptionOnFailure=false"/>
 		</route>
 
